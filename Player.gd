@@ -41,7 +41,13 @@ func _process(delta):
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
-
+func start(pos):
+	position = pos
+	show()
+	$CollisionShape2D.disabled = false
 
 func _on_Player_body_entered(body):
-	pass # Replace with function body.
+	hide() # El jugador desapareix després de ser impactat.
+	emit_signal("hit")
+# S'ha d'ajornar, ja que no podem canviar les propietats físiques en una crida de retorn de física.
+	$CollisionShape2D.set_deferred("disabled", true)
