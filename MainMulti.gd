@@ -1,8 +1,10 @@
 extends Node
 
 export(PackedScene) var mob_scene
-var score
-var players_alive = 0 # Quants jugadors queden vius.
+var score1 = 0 # Puntuació del jugador 1.
+var score2 = 0 # Puntuació del jugador 2.
+var alive1 = false # El jugador 1 segueix viu?
+var alive2 = false # El jugador 2 segueix viu?
 
 
 func _ready():
@@ -10,35 +12,51 @@ func _ready():
 
 
 func _on_player_hit(player_id):
-	players_alive -= 1
+	# Quan un jugador mor deixa de sumar punts.
+	if player_id == 1:
+		alive1 = false
+	else:
+		alive2 = false
 	# La partida s'acaba quan han mort els dos jugadors.
-	if players_alive <= 0:
+	if not alive1 and not alive2:
 		game_over()
 
 
 func game_over():
 	$ScoreTimer.stop()
 	$MobTimer.stop()
-	$HUD.show_game_over()
+	# Guanya qui ha resistit més temps (més punts).
+	if score1 > score2:
+		$HUD.show_winner("Guanya el\nJugador 1!")
+	elif score2 > score1:
+		$HUD.show_winner("Guanya el\nJugador 2!")
+	else:
+		$HUD.show_winner("Empat!")
 	$Music.stop()
 	$DeathSound.play()
 
 
 func new_game():
 	get_tree().call_group("mobs", "queue_free")
-	score = 0
+	score1 = 0
+	score2 = 0
 	$Player1.start($StartPosition1.position)
 	$Player2.start($StartPosition2.position)
-	players_alive = 2
+	alive1 = true
+	alive2 = true
 	$StartTimer.start()
-	$HUD.update_score(score)
+	$HUD.update_scores(score1, score2)
 	$HUD.show_message("Get Ready")
 	$Music.play()
 
 
 func _on_ScoreTimer_timeout():
-	score += 1
-	$HUD.update_score(score)
+	# Cada jugador suma punts només mentre segueix viu.
+	if alive1:
+		score1 += 1
+	if alive2:
+		score2 += 1
+	$HUD.update_scores(score1, score2)
 
 
 func _on_StartTimer_timeout():
