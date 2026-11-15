@@ -1,0 +1,72 @@
+extends Node
+
+export(PackedScene) var mob_scene
+var score
+var players_alive = 0 # Quants jugadors queden vius.
+
+
+func _ready():
+	randomize()
+
+
+func _on_player_hit(player_id):
+	players_alive -= 1
+	# La partida s'acaba quan han mort els dos jugadors.
+	if players_alive <= 0:
+		game_over()
+
+
+func game_over():
+	$ScoreTimer.stop()
+	$MobTimer.stop()
+	$HUD.show_game_over()
+	$Music.stop()
+	$DeathSound.play()
+
+
+func new_game():
+	get_tree().call_group("mobs", "queue_free")
+	score = 0
+	$Player1.start($StartPosition1.position)
+	$Player2.start($StartPosition2.position)
+	players_alive = 2
+	$StartTimer.start()
+	$HUD.update_score(score)
+	$HUD.show_message("Get Ready")
+	$Music.play()
+
+
+func _on_ScoreTimer_timeout():
+	score += 1
+	$HUD.update_score(score)
+
+
+func _on_StartTimer_timeout():
+	$MobTimer.start()
+	$ScoreTimer.start()
+
+
+func _on_MobTimer_timeout():
+	# Crea una nova instància de l'escena Mob.
+	var mob = mob_scene.instance()
+
+	# Tria una ubicació aleatòria a Path2D.
+	var mob_spawn_location = get_node("MobPath/MobSpawnLocation")
+	mob_spawn_location.offset = randi()
+
+	# Direcció del mob perpendicular a la direcció del camí.
+	var direction = mob_spawn_location.rotation + PI / 2
+
+	# Posició del mob a la ubicació aleatòria.
+	mob.position = mob_spawn_location.position
+
+	# Una mica d'aleatorietat a la direcció.
+	direction += rand_range(-PI / 4, PI / 4)
+	mob.rotation = direction
+
+	# Velocitat del mob.
+	var velocity = Vector2(rand_range(150.0, 250.0), 0.0)
+	mob.linear_velocity = velocity.rotated(direction)
+
+	# Afegeix el mob a l'escena principal.
+	add_child(mob)

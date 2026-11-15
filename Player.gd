@@ -2,6 +2,8 @@ extends Area2D
 signal hit
 
 export var speed = 400
+# Prefix de les accions d'input. Jugador 1: "move_" (WASD), jugador 2: "p2_move_" (fletxes).
+export var input_prefix = "move_"
 var screen_size
 # Declare member variables here. Examples:
 # var a = 2
@@ -14,13 +16,13 @@ func _ready():
 	hide()
 func _process(delta):
 	var velocity = Vector2.ZERO # Vector de moviment del jugador.
-	if Input.is_action_pressed("move_right"):
+	if Input.is_action_pressed(input_prefix + "right"):
 		velocity.x += 1
-	if Input.is_action_pressed("move_left"):
+	if Input.is_action_pressed(input_prefix + "left"):
 		velocity.x -= 1
-	if Input.is_action_pressed("move_down"):
+	if Input.is_action_pressed(input_prefix + "down"):
 		velocity.y += 1
-	if Input.is_action_pressed("move_up"):
+	if Input.is_action_pressed(input_prefix + "up"):
 		velocity.y -= 1
 	if velocity.length() > 0:
 		velocity = velocity.normalized() * speed
