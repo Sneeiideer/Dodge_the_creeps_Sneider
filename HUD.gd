@@ -26,6 +26,7 @@ func update_score(score):
 
 
 func _on_StartButton_pressed():
+	$ClickSound.play() # So en prémer el botó.
 	$StartButton.hide()
 	emit_signal("start_game")
 

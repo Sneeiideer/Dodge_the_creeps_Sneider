@@ -36,6 +36,7 @@ stretch_mode = 7
 [node name="Player2" parent="." instance=ExtResource( 1 )]
 modulate = Color( 1, 0.55, 0.55, 1 )
 input_prefix = "p2_move_"
+step_pitch = 1.4
 
 [node name="MobTimer" type="Timer" parent="."]
 wait_time = 0.5
