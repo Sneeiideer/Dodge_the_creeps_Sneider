@@ -8,6 +8,12 @@ func _ready():
 	randomize()
 
 
+func _unhandled_input(event):
+	# Amb Esc es torna al menú principal.
+	if event.is_action_pressed("ui_cancel"):
+		get_tree().change_scene("res://Menu.tscn")
+
+
 func game_over():
 	$ScoreTimer.stop()
 	$MobTimer.stop()

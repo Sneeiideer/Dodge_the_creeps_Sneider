@@ -11,6 +11,12 @@ func _ready():
 	randomize()
 
 
+func _unhandled_input(event):
+	# Amb Esc es torna al menú principal.
+	if event.is_action_pressed("ui_cancel"):
+		get_tree().change_scene("res://Menu.tscn")
+
+
 func _on_player_hit(player_id):
 	# Quan un jugador mor deixa de sumar punts.
 	if player_id == 1:
