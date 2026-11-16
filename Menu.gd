@@ -36,7 +36,7 @@ func _on_OnlineMultiplayer_pressed():
 
 
 func _on_Settings_pressed():
-	_show_coming_soon("Settings")
+	_go_to("res://SettingsMenu.tscn")
 
 
 func _on_Highscores_pressed():

@@ -57,6 +57,8 @@ func new_game():
 
 
 func _on_ScoreTimer_timeout():
+	if Settings.zen:
+		return # Mode Zen: sense puntuació.
 	# Cada jugador suma punts només mentre segueix viu.
 	if alive1:
 		score1 += 1
@@ -66,6 +68,8 @@ func _on_ScoreTimer_timeout():
 
 
 func _on_StartTimer_timeout():
+	# La dificultat canvia cada quant apareixen els Creeps.
+	$MobTimer.wait_time = Settings.mob_spawn_time()
 	$MobTimer.start()
 	$ScoreTimer.start()
 
@@ -89,7 +93,7 @@ func _on_MobTimer_timeout():
 	mob.rotation = direction
 
 	# Velocitat del mob.
-	var velocity = Vector2(rand_range(150.0, 250.0), 0.0)
+	var velocity = Vector2(rand_range(150.0, 250.0) * Settings.mob_speed_multiplier(), 0.0)
 	mob.linear_velocity = velocity.rotated(direction)
 
 	# Afegeix el mob a l'escena principal.

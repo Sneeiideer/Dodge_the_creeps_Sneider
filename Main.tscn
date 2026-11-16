@@ -32,6 +32,9 @@ expand = true
 stretch_mode = 7
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
+speed = null
+input_prefix = null
+step_pitch = null
 
 [node name="MobTimer" type="Timer" parent="."]
 wait_time = 0.5
