@@ -2,17 +2,11 @@ extends Area2D
 signal hit
 
 export var speed = 400
-# Prefix de les accions d'input. Jugador 1: "move_" (WASD), jugador 2: "p2_move_" (fletxes).
 export var input_prefix = "move_"
-# To del so dels passos (així cada jugador sona diferent).
 export var step_pitch = 1.0
 var screen_size
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
 
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
 	screen_size = get_viewport_rect().size
 	hide()
@@ -30,7 +24,6 @@ func _process(delta):
 	if velocity.length() > 0:
 		velocity = velocity.normalized() * speed
 		$AnimatedSprite.play()
-		# So de passos mentre el jugador es mou.
 		if visible and not $StepSound.playing:
 			$StepSound.play()
 	else:
@@ -46,7 +39,6 @@ func _process(delta):
 	elif velocity.y != 0:
 		$AnimatedSprite.animation = "up"
 		$AnimatedSprite.flip_v = velocity.y > 0
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
 func start(pos):

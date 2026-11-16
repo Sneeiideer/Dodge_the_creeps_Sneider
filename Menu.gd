@@ -1,16 +1,13 @@
 extends Control
-# Menú principal del joc.
 
 
 func _ready():
 	$Info.hide()
-	# Així es pot navegar pel menú amb el teclat (fletxes + Enter).
 	$Buttons/SinglePlayer.grab_focus()
 
 
 func _go_to(scene_path):
 	$ClickSound.play()
-	# Petita espera perquè se senti el so abans de canviar d'escena.
 	yield(get_tree().create_timer(0.15), "timeout")
 	get_tree().change_scene(scene_path)
 
